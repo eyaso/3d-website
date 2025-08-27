@@ -20,7 +20,7 @@ This production-ready showcase demonstrates a sophisticated 3D experience where 
 ## 🚀 Quick Start
 
 ### Option 1: Live Demo (Recommended)
-Visit the deployed demo: `https://3d-website-git-master-yasin-erdogans-projects.vercel.app/`
+Visit the deployed demo: `https://3d-website-liard.vercel.app/`
 
 ### Option 2: Local Development
 ```bash
