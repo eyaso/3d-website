@@ -1,0 +1,41 @@
+{
+  "name": "3d-construction-website",
+  "version": "1.0.0",
+  "description": "3D interactive website for construction company showcasing house exploration experience",
+  "main": "index.html",
+  "scripts": {
+    "start": "serve -s .",
+    "dev": "live-server .",
+    "build": "echo 'Build process for production deployment'",
+    "deploy": "echo 'Deploy to hosting platform'"
+  },
+  "keywords": [
+    "3d",
+    "construction",
+    "website",
+    "threejs",
+    "real-estate",
+    "interactive",
+    "scroll-animation"
+  ],
+  "author": "Your Development Team",
+  "license": "MIT",
+  "devDependencies": {
+    "live-server": "^1.2.2",
+    "serve": "^14.2.1"
+  },
+  "dependencies": {
+    "three": "^0.158.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/your-repo/3d-construction-website.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-repo/3d-construction-website/issues"
+  },
+  "homepage": "https://github.com/your-repo/3d-construction-website#readme"
+}

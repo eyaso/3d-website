@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Construction - Apartment Building Showcase</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="loading-screen">
+        <div class="loader"></div>
+        <p>Loading Apartment Building Showcase...</p>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">
+                <h1>Premium Construction</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Text-based UI -->
+    <div class="text-overlay">
+        <div class="current-phase-text">
+            <span class="phase-number">01</span>
+            <h1 id="phase-title">Building Overview</h1>
+            <p id="phase-subtitle">Modern Apartment Complex</p>
+        </div>
+        
+        <div class="phase-description">
+            <p id="description-text">Experience our modern apartment building showcasing contemporary architecture and multi-story living design.</p>
+        </div>
+        
+        <div class="phase-navigation">
+            <div class="nav-instruction">
+                <p>Scroll to begin apartment building tour</p>
+                <div class="scroll-hint">↓</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Simple progress indicator -->
+    <div class="progress-bar">
+        <div class="progress-fill"></div>
+    </div>
+
+    <canvas id="three-canvas"></canvas>
+
+    <div class="scroll-content">
+        <!-- This creates the scrollable area -->
+        <div class="section" data-phase="0"></div>
+        <div class="section" data-phase="1"></div>
+        <div class="section" data-phase="2"></div>
+        <div class="section" data-phase="3"></div>
+        <div class="section" data-phase="4"></div>
+        <div class="section" data-phase="5"></div>
+    </div>
+
+    <footer class="contact-footer">
+        <div class="contact-info">
+            <h3>Ready to Build Your Apartment Complex?</h3>
+            <p>Contact us for a professional consultation</p>
+            <button class="cta-button">Get Quote</button>
+        </div>
+    </footer>
+
+    <!-- Essential libraries for apartment building showcase -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
