@@ -10,6 +10,19 @@ let isScrolling = false;
 let scrollTimeout = null;
 let lastScrollTime = 0;
 
+// Building reveal system - Progressive interior showcase
+let buildingParts = {
+    walls: [],           // Plastic.003 - Main structural walls
+    roof: [],            // roof.003 - Roof elements
+    floors: [],          // podlaha.002 - Floor surfaces
+    windows: [],         // Glass.002 - Window elements
+    iron: [],            // iron.002 - Structural elements
+    exterior: [],        // Omitka.002 - Exterior plaster
+    wood: [],            // wood dark.002 - Wooden elements
+    shutters: []         // roleta.002 - Shutters/blinds
+};
+let revealMode = false;  // Whether building reveal is active
+
 // Phase data - Professional exterior architectural showcase
 const phases = [
     // APARTMENT BUILDING ARCHITECTURAL TOUR - OPTIMIZED FOR LARGER BUILDING
@@ -29,34 +42,34 @@ const phases = [
         camera: { x: -32, y: 12, z: 15 }, target: { x: 0, y: 6, z: 0 }, type: "exterior"
     },
     {
-        number: "04", title: "Rear Courtyard", subtitle: "Outdoor Amenities",
-        description: "Rear view demonstrating outdoor spaces, courtyard design, and building amenities integration.",
-        camera: { x: 0, y: 10, z: -38 }, target: { x: 0, y: 5, z: 0 }, type: "exterior"
+        number: "04", title: "Interior Reveal", subtitle: "First Interior Glimpse",
+        description: "Walls begin to fade revealing the interior layout and apartment arrangements within the building.",
+        camera: { x: 0, y: 10, z: -38 }, target: { x: 0, y: 5, z: 0 }, type: "interior_reveal"
     },
     {
-        number: "05", title: "Right Wing Elevation", subtitle: "Building Symmetry",
-        description: "Right side perspective highlighting architectural balance and multi-floor apartment arrangements.",
-        camera: { x: 32, y: 12, z: 15 }, target: { x: 0, y: 6, z: 0 }, type: "exterior"
+        number: "05", title: "Interior Layout", subtitle: "Apartment Arrangements", 
+        description: "Enhanced interior view showcasing individual apartment units and their spatial relationships.",
+        camera: { x: 32, y: 12, z: 15 }, target: { x: 0, y: 6, z: 0 }, type: "interior_reveal"
     },
     {
-        number: "06", title: "Balcony Details", subtitle: "Residential Features",
-        description: "Close examination of balcony construction, outdoor living spaces, and apartment amenities.",
-        camera: { x: 20, y: 8, z: 20 }, target: { x: 0, y: 4, z: 0 }, type: "exterior"
+        number: "06", title: "Multi-Floor Interior", subtitle: "Vertical Living Spaces",
+        description: "Progressive roof removal reveals upper floor apartments and vertical circulation systems.",
+        camera: { x: 20, y: 8, z: 20 }, target: { x: 0, y: 4, z: 0 }, type: "interior_focus"
     },
     {
-        number: "07", title: "Rooftop & Structure", subtitle: "Multi-Story Engineering",
-        description: "Elevated view showcasing rooftop design, building height, and structural engineering excellence.",
-        camera: { x: 15, y: 30, z: 25 }, target: { x: 0, y: 8, z: 0 }, type: "exterior"
+        number: "07", title: "Full Interior View", subtitle: "Complete Layout Revealed",
+        description: "Complete interior visibility with walls and roof removed, showcasing full apartment layouts.",
+        camera: { x: 15, y: 30, z: 25 }, target: { x: 0, y: 8, z: 0 }, type: "interior_focus"
     },
     {
-        number: "08", title: "Building Materials", subtitle: "Quality Construction",
-        description: "Detailed perspective highlighting modern building materials and construction quality standards.",
-        camera: { x: 12, y: 6, z: 18 }, target: { x: 0, y: 3, z: 0 }, type: "exterior"
+        number: "08", title: "Interior Details", subtitle: "Living Space Design",
+        description: "Close examination of interior spaces, room layouts, and residential design features.",
+        camera: { x: 12, y: 6, z: 18 }, target: { x: 0, y: 3, z: 0 }, type: "interior_focus"
     },
     {
-        number: "09", title: "Landscaping & Grounds", subtitle: "Property Development",
-        description: "Wide view showing how the apartment building integrates with landscaping and community spaces.",
-        camera: { x: 40, y: 15, z: 35 }, target: { x: 0, y: 3, z: 0 }, type: "exterior"
+        number: "09", title: "Clean Interior View", subtitle: "Pure Layout Focus", 
+        description: "Minimalist interior view with exterior elements hidden to focus on spatial organization.",
+        camera: { x: 40, y: 15, z: 35 }, target: { x: 0, y: 3, z: 0 }, type: "interior_focus"
     },
     {
         number: "10", title: "Aerial Complex View", subtitle: "Complete Development",
@@ -175,7 +188,9 @@ function loadApartmentBuilding(modelPath) {
                     -center.z * scale
                 );
                 
-                // Enable professional shadows and lighting
+                // Enable professional shadows and lighting + Collect building parts for reveal system
+                collectBuildingParts(object);
+                
                 object.traverse((child) => {
                     if (child.isMesh) {
                         child.castShadow = true;
@@ -205,6 +220,119 @@ function loadApartmentBuilding(modelPath) {
                 reject(error);
             }
         );
+    });
+}
+
+// Collect building parts by material for progressive reveal system
+function collectBuildingParts(object) {
+    // Reset building parts arrays
+    Object.keys(buildingParts).forEach(key => {
+        buildingParts[key] = [];
+    });
+    
+    console.log('🔍 Collecting building parts for reveal system...');
+    
+    object.traverse((child) => {
+        if (child.isMesh && child.material) {
+            const materialName = child.material.name;
+            
+            // Categorize meshes by material for targeted control
+            switch (materialName) {
+                case 'Plastic.003':
+                    buildingParts.walls.push(child);
+                    break;
+                case 'roof.003':
+                    buildingParts.roof.push(child);
+                    break;
+                case 'podlaha.002':
+                    buildingParts.floors.push(child);
+                    break;
+                case 'Glass.002':
+                    buildingParts.windows.push(child);
+                    break;
+                case 'iron.002':
+                    buildingParts.iron.push(child);
+                    break;
+                case 'Omitka.002':
+                    buildingParts.exterior.push(child);
+                    break;
+                case 'wood dark.002':
+                    buildingParts.wood.push(child);
+                    break;
+                case 'roleta.002':
+                    buildingParts.shutters.push(child);
+                    break;
+            }
+            
+            // Make materials transparent-ready for smooth transitions
+            if (child.material && !child.material.transparent) {
+                child.material.transparent = true;
+                child.material.opacity = 1.0;
+            }
+        }
+    });
+    
+    // Log collected parts for debugging
+    console.log('🏗️ Building parts collected:');
+    console.log('   🧱 Walls:', buildingParts.walls.length);
+    console.log('   🏠 Roof:', buildingParts.roof.length);
+    console.log('   🔳 Floors:', buildingParts.floors.length);
+    console.log('   🪟 Windows:', buildingParts.windows.length);
+    console.log('   ⚙️ Iron:', buildingParts.iron.length);
+    console.log('   🎨 Exterior:', buildingParts.exterior.length);
+    console.log('   🪵 Wood:', buildingParts.wood.length);
+    console.log('   🪟 Shutters:', buildingParts.shutters.length);
+}
+
+// Progressive building reveal based on scroll progress and current phase
+function updateBuildingReveal() {
+    if (!externalModel || buildingParts.walls.length === 0) {
+        return; // No model loaded or no parts collected
+    }
+    
+    // Determine reveal progress based on current phase
+    const revealPhases = [
+        { phase: 0, walls: 1.0, roof: 1.0, exterior: 1.0 },     // Phase 1: Full building
+        { phase: 1, walls: 1.0, roof: 1.0, exterior: 1.0 },     // Phase 2: Full building
+        { phase: 2, walls: 1.0, roof: 1.0, exterior: 1.0 },     // Phase 3: Full building
+        { phase: 3, walls: 0.7, roof: 1.0, exterior: 0.8 },     // Phase 4: Start revealing interior
+        { phase: 4, walls: 0.4, roof: 1.0, exterior: 0.6 },     // Phase 5: More interior visible
+        { phase: 5, walls: 0.2, roof: 0.8, exterior: 0.4 },     // Phase 6: Interior focus
+        { phase: 6, walls: 0.1, roof: 0.3, exterior: 0.2 },     // Phase 7: Roof start disappearing
+        { phase: 7, walls: 0.0, roof: 0.0, exterior: 0.1 },     // Phase 8: Full interior view
+        { phase: 8, walls: 0.0, roof: 0.0, exterior: 0.0 },     // Phase 9: Clean interior
+        { phase: 9, walls: 0.2, roof: 0.5, exterior: 0.3 }      // Phase 10: Partial restore for aerial view
+    ];
+    
+    const currentReveal = revealPhases[currentPhase] || revealPhases[0];
+    
+    // Apply smooth opacity transitions
+    buildingParts.walls.forEach(mesh => {
+        mesh.material.opacity = currentReveal.walls;
+        mesh.visible = currentReveal.walls > 0.05;
+    });
+    
+    buildingParts.roof.forEach(mesh => {
+        mesh.material.opacity = currentReveal.roof;
+        mesh.visible = currentReveal.roof > 0.05;
+    });
+    
+    buildingParts.exterior.forEach(mesh => {
+        mesh.material.opacity = currentReveal.exterior;
+        mesh.visible = currentReveal.exterior > 0.05;
+    });
+    
+    // Keep windows, floors, and structural elements visible for interior views
+    buildingParts.windows.forEach(mesh => {
+        mesh.material.opacity = 0.8; // Slightly transparent windows
+    });
+    
+    buildingParts.floors.forEach(mesh => {
+        mesh.material.opacity = 1.0; // Always show floors
+    });
+    
+    buildingParts.iron.forEach(mesh => {
+        mesh.material.opacity = 1.0; // Always show structure
     });
 }
 
@@ -1103,6 +1231,7 @@ function updateSmoothScrollProgress() {
     if (Math.abs(targetScrollProgress - currentScrollProgress) > 0.001) {
         scrollProgress = currentScrollProgress;
         updateCamera();
+        updateBuildingReveal(); // Progressive interior reveal
         updateUI();
         updateNavbar();
     } else {
