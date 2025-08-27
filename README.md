@@ -20,12 +20,12 @@ This production-ready showcase demonstrates a sophisticated 3D experience where 
 ## 🚀 Quick Start
 
 ### Option 1: Live Demo (Recommended)
-Visit the deployed demo: `[Your deployment URL here]`
+Visit the deployed demo: `https://3d-website-git-master-yasin-erdogans-projects.vercel.app/`
 
 ### Option 2: Local Development
 ```bash
 # Clone or download the project
-git clone [your-repo-url]
+git clone https://github.com/eyaso/3d-website.git
 cd 3d-website
 
 # Start a local server (Python example)

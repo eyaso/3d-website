@@ -5,9 +5,7 @@
   "main": "index.html",
   "scripts": {
     "start": "serve -s .",
-    "dev": "live-server .",
-    "build": "echo 'Build process for production deployment'",
-    "deploy": "echo 'Deploy to hosting platform'"
+    "dev": "live-server ."
   },
   "keywords": [
     "3d",
@@ -18,24 +16,18 @@
     "interactive",
     "scroll-animation"
   ],
-  "author": "Your Development Team",
+  "author": "Eyaso",
   "license": "MIT",
   "devDependencies": {
     "live-server": "^1.2.2",
     "serve": "^14.2.1"
   },
-  "dependencies": {
-    "three": "^0.158.0"
-  },
-  "engines": {
-    "node": ">=14.0.0"
-  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/your-repo/3d-construction-website.git"
+    "url": "git+https://github.com/eyaso/3d-website.git"
   },
   "bugs": {
-    "url": "https://github.com/your-repo/3d-construction-website/issues"
+    "url": "https://github.com/eyaso/3d-website/issues"
   },
-  "homepage": "https://github.com/your-repo/3d-construction-website#readme"
+  "homepage": "https://github.com/eyaso/3d-website#readme"
 }
